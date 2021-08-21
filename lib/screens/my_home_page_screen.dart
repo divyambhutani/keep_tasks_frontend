@@ -30,7 +30,7 @@ class SidebarPage extends StatefulWidget {
 
 class _SidebarPageState extends State<SidebarPage> {
   List<CollapsibleItem> _items = [];
-  String _headline = '';
+
   NetworkImage _avatarImg =
       NetworkImage('https://www.w3schools.com/howto/img_avatar.png');
   late Widget mainBody;
@@ -39,7 +39,6 @@ class _SidebarPageState extends State<SidebarPage> {
     super.initState();
     _items = _generateItems;
     mainBody = TasksScreen();
-    _headline = _items.firstWhere((item) => item.isSelected).text;
   }
 
   List<CollapsibleItem> get _generateItems {
@@ -58,7 +57,7 @@ class _SidebarPageState extends State<SidebarPage> {
       CollapsibleItem(
         text: 'Settings',
         icon: Icons.account_circle,
-        onPressed: () => setState(() => _headline = 'Settings'),
+        onPressed: () => setState(() => Helper()),
       ),
       // CollapsibleItem(
       //   text: 'Search',
@@ -96,23 +95,6 @@ class _SidebarPageState extends State<SidebarPage> {
             fontStyle: FontStyle.italic,
             fontWeight: FontWeight.bold),
         toggleTitleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget _body(Size size, BuildContext context) {
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      color: Colors.blueGrey[50],
-      child: Center(
-        child: Transform.rotate(
-          angle: math.pi / 2,
-          child: Transform.translate(
-            offset: Offset(-size.height * 0.3, -size.width * 0.23),
-            child: Helper(),
-          ),
-        ),
       ),
     );
   }
