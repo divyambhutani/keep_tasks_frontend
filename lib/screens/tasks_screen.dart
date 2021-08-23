@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keep_tasks_frontend/widgets/addTaskSheet.dart';
 import '../models/task.dart';
 import '../widgets/task_tile.dart';
 
@@ -8,6 +9,14 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
+  void add(ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return AddTaskSheet();
+        });
+  }
+
   List<Task> _tasks = [
     Task(description: 'Task1', completed: false, createdAt: new DateTime.now()),
     Task(
@@ -77,7 +86,7 @@ class _TasksScreenState extends State<TasksScreen> {
                 tooltip: "Add a new task",
                 iconSize: 65,
                 color: Colors.blue,
-                onPressed: () => {},
+                onPressed: () => {add(context)},
                 icon: Icon(
                   Icons.add_circle_sharp,
                 ),

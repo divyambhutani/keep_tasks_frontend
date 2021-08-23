@@ -17,7 +17,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final ImagePicker _picker = ImagePicker();
 
   XFile? file;
-
   bool personalEnable = false;
 
   var errorMessage = "";
