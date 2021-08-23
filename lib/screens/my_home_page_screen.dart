@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
+import 'package:keep_tasks_frontend/screens/user_profile_screen.dart';
 import './tasks_screen.dart';
 import 'dart:math' as math show pi;
 
@@ -55,15 +56,10 @@ class _SidebarPageState extends State<SidebarPage> {
         onPressed: () => setState(() => mainBody = Helper()),
       ),
       CollapsibleItem(
-        text: 'Settings',
+        text: 'Profile',
         icon: Icons.account_circle,
-        onPressed: () => setState(() => Helper()),
+        onPressed: () => setState(() => mainBody = UserProfileScreen()),
       ),
-      // CollapsibleItem(
-      //   text: 'Search',
-      //   icon: Icons.search,
-      //   onPressed: () => setState(() => mainBody = Helper2()),
-      // ),
       CollapsibleItem(
         text: 'LogOut',
         icon: Icons.logout_rounded,

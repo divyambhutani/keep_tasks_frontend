@@ -40,7 +40,7 @@ class _TasksScreenState extends State<TasksScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return SafeArea(
       child: Container(
         height: double.infinity,
         width: double.infinity,
