@@ -1,11 +1,10 @@
 class Task {
   String description;
   bool completed;
-  DateTime createdAt;
+  late DateTime createdAt;
 
   Task({
     required this.description,
-    required this.completed,
-    required this.createdAt,
+    this.completed = false,
   });
 }

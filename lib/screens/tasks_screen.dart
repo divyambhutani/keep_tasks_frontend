@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:keep_tasks_frontend/provider/task_provider.dart';
 import '../models/task.dart';
 import '../widgets/task_tile.dart';
+import 'package:provider/provider.dart';
 
 class TasksScreen extends StatefulWidget {
   @override
@@ -8,36 +12,19 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
-  List<Task> _tasks = [
-    Task(description: 'Task1', completed: false, createdAt: new DateTime.now()),
-    Task(
-        description:
-            'Task2fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
-        completed: true,
-        createdAt: new DateTime.now()),
-    Task(description: 'Task3', completed: false, createdAt: new DateTime.now()),
-    Task(description: 'Task1', completed: false, createdAt: new DateTime.now()),
-    Task(
-        description:
-            'Task2fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
-        completed: true,
-        createdAt: new DateTime.now()),
-    Task(description: 'Task3', completed: false, createdAt: new DateTime.now()),
-    Task(description: 'Task1', completed: false, createdAt: new DateTime.now()),
-    Task(
-        description:
-            'Task2fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
-        completed: true,
-        createdAt: new DateTime.now()),
-    Task(description: 'Task3', completed: false, createdAt: new DateTime.now()),
-    Task(description: 'Task1', completed: false, createdAt: new DateTime.now()),
-    Task(
-        description:
-            'Task2fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
-        completed: true,
-        createdAt: new DateTime.now()),
-    Task(description: 'Task3', completed: false, createdAt: new DateTime.now()),
-  ];
+  List<Task> _tasks = [];
+  @override
+  void initState() {
+    fetch();
+    super.initState();
+  }
+
+  void fetch() async {
+    final provider = Provider.of<TaskProvider>(context, listen: false);
+    await provider.fetch();
+    _tasks = await provider.tasks;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
