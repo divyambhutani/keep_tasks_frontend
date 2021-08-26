@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:keep_tasks_frontend/screens/init_screen.dart';
 import 'provider/task_provider.dart';
-import 'screens/my_home_page_screen.dart';
+import 'screens/init_screen.dart';
+import 'screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
             thumbColor: MaterialStateProperty.all(Colors.black54),
           ),
         ),
-        home: MyHomePage(),
+        home: InitScreen(),
       ),
     );
   }
