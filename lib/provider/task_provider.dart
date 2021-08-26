@@ -16,7 +16,7 @@ class TaskProvider with ChangeNotifier {
   Future<void> fetch() async {
     print('Invoked1');
 
-    String url = 'localhost:3000/tasks';
+    String url = 'https://divi-keep-task-backend.herokuapp.com/tasks';
     // var encoding = Encoding.getByName('utf-8');
     try {
       var response = await http.get(
@@ -25,7 +25,7 @@ class TaskProvider with ChangeNotifier {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Authorization':
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTBhYmQyZDlmMWMwODMzZWUyM2QzN2YiLCJpYXQiOjE2MjgwOTM3NDF9.EeMzUJvn969k4_FLd6qPnZLD_BmQbeEDgeYFpgS1NWI"
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTI2NDY0MGI3Yjg5ZTAwMTZjN2Y5YTUiLCJpYXQiOjE2Mjk4OTgzMDR9.iJBUM6SqRFw3cP8SjukkYLCSyzEAypNgx7PPpSjuxZ8"
         },
       );
     } catch (e) {
