@@ -31,7 +31,6 @@ class TaskProvider with ChangeNotifier {
     } catch (e) {
       print(e);
     }
-
     print('Invoked2');
 
     // var decoded = json.decode(response.body);

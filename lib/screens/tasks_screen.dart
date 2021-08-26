@@ -20,7 +20,7 @@ class _TasksScreenState extends State<TasksScreen> {
     super.initState();
   }
 
-  void fetch() async {
+  Future<void> fetch() async {
     final provider = Provider.of<TaskProvider>(context, listen: false);
     await provider.fetch();
     _tasks = await provider.tasks;
