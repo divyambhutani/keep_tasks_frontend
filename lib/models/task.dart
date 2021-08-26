@@ -1,10 +1,11 @@
 class Task {
   String description;
   bool completed;
-  late DateTime createdAt;
+   DateTime createdAt=DateTime.now();
 
   Task({
     required this.description,
     this.completed = false,
+    
   });
 }
