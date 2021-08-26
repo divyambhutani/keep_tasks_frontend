@@ -28,6 +28,13 @@ class TaskProvider with ChangeNotifier {
               "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTI2NDY0MGI3Yjg5ZTAwMTZjN2Y5YTUiLCJpYXQiOjE2Mjk4OTgzMDR9.iJBUM6SqRFw3cP8SjukkYLCSyzEAypNgx7PPpSjuxZ8"
         },
       );
+      final output = json.decode(response.body);
+
+      for (final task in output) {
+        print(task);
+        _tasks.add(Task(description: task['description']));
+      }
+      notifyListeners();
     } catch (e) {
       print(e);
     }
