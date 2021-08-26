@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:keep_tasks_frontend/provider/task_provider.dart';
+import 'package:keep_tasks_frontend/widgets/addTaskSheet.dart';
 import '../models/task.dart';
 import '../widgets/task_tile.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,14 @@ class _TasksScreenState extends State<TasksScreen> {
     final provider = Provider.of<TaskProvider>(context, listen: false);
     await provider.fetch();
     _tasks = await provider.tasks;
+  }
+
+  void add(ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return AddTaskSheet();
+        });
   }
 
   @override
@@ -64,7 +73,7 @@ class _TasksScreenState extends State<TasksScreen> {
                 tooltip: "Add a new task",
                 iconSize: 65,
                 color: Colors.blue,
-                onPressed: () => {},
+                onPressed: () => {add(context)},
                 icon: Icon(
                   Icons.add_circle_sharp,
                 ),
