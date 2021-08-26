@@ -48,18 +48,20 @@ class TaskProvider with ChangeNotifier {
     print(description);
     if (description.length == 0) return;
     String url = 'https://divi-keep-task-backend.herokuapp.com/tasks';
-    var taskBody = json.encode({"description": description});
-    final response = await http.post(Uri.parse(url),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization':
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTI2NDY0MGI3Yjg5ZTAwMTZjN2Y5YTUiLCJpYXQiOjE2Mjk4OTgzMDR9.iJBUM6SqRFw3cP8SjukkYLCSyzEAypNgx7PPpSjuxZ8"
-        },
-        body: taskBody);
-    print(json.decode(response.body));
-    Task task = new Task(description: description);
-    _tasks.add(task);
-    notifyListeners();
+    try {
+      var taskBody = json.encode({"description": description});
+      final response = await http.post(Uri.parse(url),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization':
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTI2NDY0MGI3Yjg5ZTAwMTZjN2Y5YTUiLCJpYXQiOjE2Mjk4OTgzMDR9.iJBUM6SqRFw3cP8SjukkYLCSyzEAypNgx7PPpSjuxZ8"
+          },
+          body: taskBody);
+      print(json.decode(response.body));
+      Task task = new Task(description: description);
+      _tasks.add(task);
+      notifyListeners();
+    } catch (e) {}
   }
 }

@@ -31,10 +31,14 @@ class _TasksScreenState extends State<TasksScreen> {
   }
 
   void fetch() async {
-    final provider = Provider.of<TaskProvider>(context, listen: true);
+    final provider = Provider.of<TaskProvider>(context);
 
     await provider.fetch();
-    _tasks = provider.tasks;
+    setState(() {
+      _tasks.clear();
+      _tasks = provider.tasks;
+    });
+    print(_tasks);
   }
 
   void add(ctx) {
@@ -84,7 +88,12 @@ class _TasksScreenState extends State<TasksScreen> {
                 tooltip: "Add a new task",
                 iconSize: 65,
                 color: Colors.blue,
-                onPressed: () => {add(context)},
+                onPressed: () => {
+                  add(context),
+                  setState(() {
+                    widget.done = false;
+                  })
+                },
                 icon: Icon(
                   Icons.add_circle_sharp,
                 ),

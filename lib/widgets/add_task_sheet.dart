@@ -57,9 +57,11 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
 //                   )
 //                 ],
 //               ),
-              FlatButton(
+              ElevatedButton(
                 child: Text("Add Task"),
-                color: Colors.deepOrange,
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.deepOrange)),
                 onPressed: () async {
                   if (descController.text.isEmpty) {
                     Navigator.of(context).pop();
