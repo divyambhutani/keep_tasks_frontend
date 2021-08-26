@@ -8,19 +8,43 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/user.dart';
 
 class TaskProvider with ChangeNotifier {
+  static const apiUrl = 'https://divi-keep-task-backend.herokuapp.com';
   List<Task> _tasks = [];
-  String _authToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTI2NDY0MGI3Yjg5ZTAwMTZjN2Y5YTUiLCJpYXQiOjE2Mjk4OTgzMDR9.iJBUM6SqRFw3cP8SjukkYLCSyzEAypNgx7PPpSjuxZ8';
-
+  String _authToken = '';
+  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTI2NDY0MGI3Yjg5ZTAwMTZjN2Y5YTUiLCJpYXQiOjE2Mjk4OTgzMDR9.iJBUM6SqRFw3cP8SjukkYLCSyzEAypNgx7PPpSjuxZ8
   // token getter
   String get authToken {
     return _authToken;
   }
 
+  // signUser
+  Future<void> signIn(String email, String password) async {
+    String url = '${apiUrl}/users/login';
+    var response;
+    try {
+      var userBody = json.encode({"email": email, "password": password});
+      print(userBody);
+      response = await http.post(Uri.parse(url),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: userBody);
+      final result = json.decode(response.body);
+      if (result.length == 0) throw new Error();
+      notifyListeners();
+    } catch (e) {
+      print(e.toString());
+      throw Error();
+    }
+  }
+  //createUser
+
   // setToken
-  Future<void> saveToken() async {
+  Future<void> saveToken(newToken) async {
     final storage = new FlutterSecureStorage();
-    await storage.write(key: 'jwt', value: authToken);
+    await storage.write(key: 'jwt', value: newToken);
+    this._authToken = newToken;
   }
 
   // getToken
@@ -32,7 +56,7 @@ class TaskProvider with ChangeNotifier {
 
   // verifyToken
   Future<String> verifyToken() async {
-    String url = 'https://divi-keep-task-backend.herokuapp.com/users/verify';
+    String url = '${apiUrl}/verify';
     try {
       var response = await http.post(
         Uri.parse(url),
@@ -62,7 +86,7 @@ class TaskProvider with ChangeNotifier {
     _tasks.clear();
     print('Invoked1');
 
-    String url = 'https://divi-keep-task-backend.herokuapp.com/tasks';
+    String url = '${apiUrl}/tasks';
     // var encoding = Encoding.getByName('utf-8');
     try {
       var response = await http.get(
@@ -91,7 +115,7 @@ class TaskProvider with ChangeNotifier {
   Future<void> addNewTask(String description) async {
     print(description);
     if (description.length == 0) return;
-    String url = 'https://divi-keep-task-backend.herokuapp.com/tasks';
+    String url = '${apiUrl}/tasks';
     try {
       var taskBody = json.encode({"description": description});
       final response = await http.post(Uri.parse(url),

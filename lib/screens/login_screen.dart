@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:keep_tasks_frontend/provider/task_provider.dart';
+import 'package:provider/provider.dart';
+import '../screens/my_home_page_screen.dart';
 
-class LoginScreen extends StatelessWidget {
-  static const routeName = '/login';
+class LoginScreen extends StatefulWidget {
+  static const routeName = '/loginScreen';
 
-  var isloading = false;
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  var isLoading = false;
 
   Duration get loginTime => Duration(milliseconds: 2250);
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<TaskProvider>(context, listen: false);
     Future<String>? dialog(String desc, String s) {
       showDialog(
           context: context,
@@ -27,8 +36,19 @@ class LoginScreen extends StatelessWidget {
               ));
     }
 
-    Future<String>? login(LoginData data) {
-      // ignore: missing_return
+    Future<String?> login(LoginData data) {
+      return Future.delayed(loginTime).then((_) async {
+        try {
+          await provider.signIn(data.name, data.password);
+        } catch (error) {
+          print(error);
+          setState(() {
+            isLoading = true;
+          });
+          return await dialog(
+              'Check your credentials', 'Password or email is wrong');
+        }
+      });
     }
 
     Future<String>? signup(LoginData data) {
@@ -38,13 +58,16 @@ class LoginScreen extends StatelessWidget {
     return FlutterLogin(
       // logo: 'assets/news_icon.png',
       onSubmitAnimationCompleted: () {
-        print(isloading);
-        // Navigator.pushReplacementNamed(context);
+        print(isLoading);
+        if (isLoading == false) {
+          Navigator.pushReplacementNamed(context, MyHomePage.routeName);
+        }
       },
       // ignore: missing_return
       onLogin: (data) => login(data),
 
-      onSignup: (LoginData) {}, onRecoverPassword: (String) {},
+      onSignup: (LoginData) {},
+      onRecoverPassword: (String) {},
       // onSignup: (data) => signup(data),
     );
   }

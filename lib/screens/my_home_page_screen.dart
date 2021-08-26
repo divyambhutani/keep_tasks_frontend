@@ -5,7 +5,7 @@ import './tasks_screen.dart';
 import 'dart:math' as math show pi;
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  static const routeName = '/MyHomePage';
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
