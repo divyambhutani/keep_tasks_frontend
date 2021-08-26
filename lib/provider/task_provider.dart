@@ -14,6 +14,7 @@ class TaskProvider with ChangeNotifier {
 
   //fetch list
   Future<void> fetch() async {
+    _tasks.clear();
     print('Invoked1');
 
     String url = 'https://divi-keep-task-backend.herokuapp.com/tasks';
@@ -31,7 +32,6 @@ class TaskProvider with ChangeNotifier {
       final output = json.decode(response.body);
 
       for (final task in output) {
-        print(task);
         _tasks.add(Task(description: task['description']));
       }
       notifyListeners();
@@ -46,16 +46,19 @@ class TaskProvider with ChangeNotifier {
 
   // add new task
   Future<void> addNewTask(String description) async {
+    print(description);
     if (description.length == 0) return;
-    String url = 'localhost:3000/tasks';
+    String url = 'https://divi-keep-task-backend.herokuapp.com/tasks';
     var taskBody = json.encode({"description": description});
-    await http.post(Uri.parse(url),
+    final response = await http.post(Uri.parse(url),
         headers: {
-          "authToken":
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTBhYmQyZDlmMWMwODMzZWUyM2QzN2YiLCJpYXQiOjE2MjgwOTM3NDF9.EeMzUJvn969k4_FLd6qPnZLD_BmQbeEDgeYFpgS1NWI"
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization':
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTI2NDY0MGI3Yjg5ZTAwMTZjN2Y5YTUiLCJpYXQiOjE2Mjk4OTgzMDR9.iJBUM6SqRFw3cP8SjukkYLCSyzEAypNgx7PPpSjuxZ8"
         },
         body: taskBody);
-
+    print(json.decode(response.body));
     Task task = new Task(description: description);
     _tasks.add(task);
     notifyListeners();

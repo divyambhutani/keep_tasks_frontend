@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:keep_tasks_frontend/provider/task_provider.dart';
-import 'package:keep_tasks_frontend/widgets/addTaskSheet.dart';
+import 'package:keep_tasks_frontend/widgets/add_task_sheet.dart';
 import '../models/task.dart';
 import '../widgets/task_tile.dart';
 import 'package:provider/provider.dart';
 
 class TasksScreen extends StatefulWidget {
+  bool done = false;
+
   @override
   _TasksScreenState createState() => _TasksScreenState();
 }
@@ -16,14 +18,23 @@ class _TasksScreenState extends State<TasksScreen> {
   List<Task> _tasks = [];
   @override
   void initState() {
-    fetch();
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    if (widget.done == false) {
+      fetch();
+      widget.done = true;
+    }
+    super.didChangeDependencies();
+  }
+
   void fetch() async {
-    final provider = Provider.of<TaskProvider>(context, listen: false);
+    final provider = Provider.of<TaskProvider>(context, listen: true);
+
     await provider.fetch();
-    _tasks = await provider.tasks;
+    _tasks = provider.tasks;
   }
 
   void add(ctx) {

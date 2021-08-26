@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:keep_tasks_frontend/provider/task_provider.dart';
+import 'package:provider/provider.dart';
 
-class AddTaskSheet extends StatelessWidget {
+class AddTaskSheet extends StatefulWidget {
+  @override
+  _AddTaskSheetState createState() => _AddTaskSheetState();
+}
+
+class _AddTaskSheetState extends State<AddTaskSheet> {
   TextEditingController descController = TextEditingController();
 
   @override
@@ -53,10 +60,13 @@ class AddTaskSheet extends StatelessWidget {
               FlatButton(
                 child: Text("Add Task"),
                 color: Colors.deepOrange,
-                onPressed: () {
-                  if (descController.text.isEmpty == false) {
+                onPressed: () async {
+                  if (descController.text.isEmpty) {
                     Navigator.of(context).pop();
                   } else {
+                    final provider =
+                        Provider.of<TaskProvider>(context, listen: false);
+                    await provider.addNewTask(descController.text);
                     Navigator.of(context).pop();
                   } //! save task in screen
                 },
