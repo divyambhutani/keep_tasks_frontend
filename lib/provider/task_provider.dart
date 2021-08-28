@@ -1,17 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:keep_tasks_frontend/models/task.dart';
 import "package:http/http.dart" as http;
 import "dart:convert";
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../models/user.dart';
 
 class TaskProvider with ChangeNotifier {
   static const apiUrl = 'https://divi-keep-task-backend.herokuapp.com';
   List<Task> _tasks = [];
   String _authToken = '';
-  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTI2NDY0MGI3Yjg5ZTAwMTZjN2Y5YTUiLCJpYXQiOjE2Mjk4OTgzMDR9.iJBUM6SqRFw3cP8SjukkYLCSyzEAypNgx7PPpSjuxZ8
   // token getter
   String get authToken {
     return _authToken;
@@ -27,17 +23,20 @@ class TaskProvider with ChangeNotifier {
       response = await http.post(Uri.parse(url),
           headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
           },
           body: userBody);
-      final result = json.decode(response.body);
-      if (result.length == 0) throw new Error();
+      final result = jsonDecode(response.body);
+
+      if (result == {}) throw new Error();
+      await saveToken(result['token']);
+      print("signIn token >>> " + _authToken);
       notifyListeners();
     } catch (e) {
       print(e.toString());
       throw Error();
     }
   }
+
   //createUser
 
   // setToken
@@ -56,20 +55,22 @@ class TaskProvider with ChangeNotifier {
 
   // verifyToken
   Future<String> verifyToken() async {
-    String url = '${apiUrl}/verify';
+    print("verify>>>" + this._authToken);
+    String url = '${apiUrl}/users/verify';
+    var response;
     try {
-      var response = await http.post(
+      response = await http.post(
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          // 'Accept': 'application/json',
           'Authorization': 'Bearer ${_authToken}'
         },
       );
       var result = json.decode(response.body);
+
       if (result.containsKey('error')) return "false";
     } catch (e) {
-      print(e);
       return "false";
     }
 
@@ -84,7 +85,6 @@ class TaskProvider with ChangeNotifier {
   //fetch list
   Future<void> fetch() async {
     _tasks.clear();
-    print('Invoked1');
 
     String url = '${apiUrl}/tasks';
     // var encoding = Encoding.getByName('utf-8');
@@ -103,10 +103,7 @@ class TaskProvider with ChangeNotifier {
         _tasks.add(Task(description: task['description']));
       }
       notifyListeners();
-    } catch (e) {
-      print(e);
-    }
-    print('Invoked2');
+    } catch (e) {}
 
     // var decoded = json.decode(response.body);
   }
@@ -131,6 +128,27 @@ class TaskProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<void> logout() async {
+    print('hello');
+    final url = '${apiUrl}/users/logout';
+    try {
+      var response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          // 'Accept': 'application/json',
+          'Authorization': 'Bearer ${_authToken}'
+        },
+      );
+      // var result = json.decode(response.body);
+      saveToken('');
+      // if (result.containsKey('error')) throw new Error();
+    } catch (e) {
+      print(e);
+      throw new Error();
     }
   }
 }

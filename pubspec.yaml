@@ -30,6 +30,7 @@ dependencies:
   flutter_secure_storage: ^4.2.1
   http: ^0.13.3
   image_picker: ^0.8.3+3
+  modal_progress_hud_nsn: ^0.1.0-nullsafety-1
   provider: ^5.0.0
   # xfile: ^1.1.0
 

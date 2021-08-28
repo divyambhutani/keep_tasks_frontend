@@ -5,6 +5,7 @@ import 'provider/task_provider.dart';
 import 'screens/init_screen.dart';
 import 'screens/login_screen.dart';
 import 'package:provider/provider.dart';
+import 'screens/log_out_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         routes: {
           MyHomePage.routeName: (context) => MyHomePage(),
           LoginScreen.routeName: (context) => LoginScreen(),
+          LogOutScreen.routeName: (context) => LogOutScreen(),
         },
       ),
     );

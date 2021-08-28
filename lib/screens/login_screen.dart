@@ -21,19 +21,20 @@ class _LoginScreenState extends State<LoginScreen> {
     final provider = Provider.of<TaskProvider>(context, listen: false);
     Future<String>? dialog(String desc, String s) {
       showDialog(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-                title: Text('$s'),
-                content: Text("$desc"),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(
-                            context, LoginScreen.routeName);
-                      },
-                      child: Text('OK!'))
-                ],
-              ));
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text('$s'),
+          content: Text("$desc"),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(
+                      context, LoginScreen.routeName);
+                },
+                child: Text('OK!'))
+          ],
+        ),
+      );
     }
 
     Future<String?> login(LoginData data) {
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return FlutterLogin(
       // logo: 'assets/news_icon.png',
       onSubmitAnimationCompleted: () {
-        print(isLoading);
+        // print(isLoading);
         if (isLoading == false) {
           Navigator.pushReplacementNamed(context, MyHomePage.routeName);
         }
@@ -67,7 +68,10 @@ class _LoginScreenState extends State<LoginScreen> {
       onLogin: (data) => login(data),
 
       onSignup: (LoginData) {},
-      onRecoverPassword: (String) {},
+      onRecoverPassword: (String) => null,
+      hideForgotPasswordButton: true,
+      title: 'Goalz App',
+      userType: LoginUserType.name,
       // onSignup: (data) => signup(data),
     );
   }

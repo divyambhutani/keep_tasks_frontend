@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class TasksScreen extends StatefulWidget {
   bool done = false;
-
+  bool taskLoaded = false;
   @override
   _TasksScreenState createState() => _TasksScreenState();
 }
@@ -38,7 +38,10 @@ class _TasksScreenState extends State<TasksScreen> {
       _tasks.clear();
       _tasks = provider.tasks;
     });
-    print(_tasks);
+    setState(() {
+      widget.taskLoaded = true;
+    });
+    // print(_tasks);
   }
 
   void add(ctx) {
@@ -52,57 +55,65 @@ class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        height: double.infinity,
-        width: double.infinity,
-        margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-        child: Column(
-          children: [
-            Card(
-              color: Colors.black.withAlpha(220),
-              elevation: 20,
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: Center(
-                  child: Text(
-                    'Tasks',
-                    style: TextStyle(
-                      fontFamily: 'PressStart2P',
-                      fontSize: 40,
-                      color: Colors.blueGrey[200],
+      child: !widget.taskLoaded
+          ? Center(
+              child: CircularProgressIndicator(
+                color: Colors.black,
+                backgroundColor: Colors.grey[400],
+              ),
+            )
+          : Container(
+              height: double.infinity,
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              child: Column(
+                children: [
+                  Card(
+                    color: Colors.black.withAlpha(220),
+                    elevation: 20,
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Center(
+                        child: Text(
+                          'Tasks',
+                          style: TextStyle(
+                            fontFamily: 'PressStart2P',
+                            fontSize: 40,
+                            color: Colors.blueGrey[200],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (context, index) => TaskTile(_tasks[index]),
+                      itemCount: _tasks.length,
+                    ),
+                  ),
+                  Container(
+                      child: Center(
+                    child: IconButton(
+                      tooltip: "Add a new task",
+                      iconSize: 65,
+                      hoverColor: Colors.red,
+                      color: Colors.black,
+                      onPressed: () => {
+                        add(context),
+                        setState(() {
+                          widget.done = false;
+                        })
+                      },
+                      icon: Icon(
+                        Icons.add_circle_sharp,
+                      ),
+                    ),
+                  )),
+                ],
               ),
+              color: Colors.blueGrey[50],
             ),
-            Expanded(
-              child: ListView.builder(
-                itemBuilder: (context, index) => TaskTile(_tasks[index]),
-                itemCount: _tasks.length,
-              ),
-            ),
-            Container(
-                child: Center(
-              child: IconButton(
-                tooltip: "Add a new task",
-                iconSize: 65,
-                color: Colors.blue,
-                onPressed: () => {
-                  add(context),
-                  setState(() {
-                    widget.done = false;
-                  })
-                },
-                icon: Icon(
-                  Icons.add_circle_sharp,
-                ),
-              ),
-            )),
-          ],
-        ),
-        color: Colors.blueGrey[50],
-      ),
     );
   }
 }
