@@ -1,6 +1,6 @@
 # keep_goalz_frontend
 
-server link :-https://github.com/divyambhutani/user_task_manager_backend.git
+backend server link :-https://github.com/divyambhutani/user_task_manager_backend.git
 
 ## Getting Started
 
