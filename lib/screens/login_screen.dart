@@ -3,6 +3,7 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:keep_tasks_frontend/provider/task_provider.dart';
 import 'package:provider/provider.dart';
 import '../screens/my_home_page_screen.dart';
+import '../screens/user_profile_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/loginScreen';
@@ -52,8 +53,21 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
 
-    Future<String>? signup(LoginData data) {
+    Future<String?> signup(LoginData data) {
       // ignore: missing_return
+      return Future.delayed(loginTime).then((_) async {
+        try {
+          await provider.signUp(data.name, data.password);
+        } catch (error) {
+          print(error);
+          setState(() {
+            isLoading = true;
+          });
+          // print("signup");
+          return await dialog(
+              'Check your credentials', 'Password or email is wrong');
+        }
+      });
     }
 
     return FlutterLogin(
@@ -67,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // ignore: missing_return
       onLogin: (data) => login(data),
 
-      onSignup: (LoginData) {},
+      onSignup: (data) => signup(data),
       onRecoverPassword: (String) => null,
       hideForgotPasswordButton: true,
       title: 'Goalz App',

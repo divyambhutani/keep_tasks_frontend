@@ -8,6 +8,7 @@ import '../widgets/task_tile.dart';
 import 'package:provider/provider.dart';
 
 class TasksScreen extends StatefulWidget {
+  static const routeName = "/taskScreen";
   bool done = false;
   bool taskLoaded = false;
   @override

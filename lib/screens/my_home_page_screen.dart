@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
+import 'package:keep_tasks_frontend/screens/init_screen.dart';
 import 'package:keep_tasks_frontend/screens/user_profile_screen.dart';
 import 'log_out_screen.dart';
 import './tasks_screen.dart';
 import 'dart:math' as math show pi;
+import 'package:provider/provider.dart';
+import '../provider/task_provider.dart';
 
 class MyHomePage extends StatefulWidget {
   static const routeName = '/MyHomePage';
@@ -12,10 +15,26 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+String meName = '';
+
 class _MyHomePageState extends State<MyHomePage> {
   @override
-  List<CollapsibleItem> _items = [];
+  void initState() {
+    // final provider = Provider.of<TaskProvider>(context, listen: false);
+    setUserName();
+    super.initState();
+  }
 
+  void setUserName() async {
+    final provider = Provider.of<TaskProvider>(context, listen: false);
+    await provider.getUserDetails();
+    setState(() {
+      meName = provider.me.username;
+    });
+  }
+
+  @override
+  List<CollapsibleItem> _items = [];
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -73,7 +92,7 @@ class _SidebarPageState extends State<SidebarPage> {
         // fitItemsToBottom: true,
         avatarImg: _avatarImg,
 
-        title: 'User',
+        title: meName,
         onTitleTap: () {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Yay! Flutter Collapsible Sidebar!')));
